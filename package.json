@@ -1,0 +1,12 @@
+{
+  "name": "fake-roaming-api",
+  "version": "1.0.0",
+  "description": "Fake Roaming service JSON API for tests and interviews",
+  "main": "index.js",
+  "repository": "https://github.com/garantexpress/fake-roaming-api",
+  "author": "Arseniy Pelipas <pelipas@e-garant.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "json-server": "^0.16.3"
+  }
+}
