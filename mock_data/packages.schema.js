@@ -3,19 +3,29 @@ extend("faker", () => require("faker"));
 format("guid", () => random.randexp("2[A-Z]{2}[0-9]{1,43}"));
 format("inn", () => random.randexp("77[0-9]{8}"));
 format("kpp", () => random.randexp("77[0-9]{7}"));
+
 const schema = {
   type: "array",
   minItems: 100,
   items: {
     type: "object",
     description: "Транспортный пакет",
-    required: ["uuid", "endpoints", "receiptTo"],
+    required: ["id", "createdAt", "uuid", "endpoints", "receiptTo"],
     oneOf: [
       { required: ["invitations"] },
       { required: ["logicalMessages"] },
       { required: ["receipts"] },
     ],
     properties: {
+      id: {
+        $ref: "#/definitions/positiveInt",
+        description: "Идентификатор пакета",
+      },
+      createdAt: {
+        type: "date",
+        description: "Дата создания",
+        faker: "date.past",
+      },
       uuid: {
         type: "string",
         description: "UUID пакета",
@@ -54,9 +64,8 @@ const schema = {
           required: ["sender"],
           properties: {
             responseType: {
-              type: "string",
+              enum: ["accept", "reject"],
               description: "Тип ответа",
-              pattern: "accept|reject",
             },
             requestId: {
               type: "string",
@@ -398,8 +407,14 @@ const schema = {
       },
     },
   },
+  definitions: {
+    positiveInt: {
+      type: "integer",
+      minimum: 0,
+      exclusiveMinimum: true,
+    },
+  },
 };
 
 console.log("Generate fake packages");
-const packages = generate(schema);
-module.exports = packages;
+module.exports = generate(schema);

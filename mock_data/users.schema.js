@@ -3,14 +3,15 @@ extend("faker", () => require("faker"));
 
 const schema = {
   type: "array",
-  minItems: 20,
+  minItems: 100,
   items: {
     type: "object",
+    description: "Пользователь",
     required: [
       "id",
-      "first_name",
-      "last_name",
-      "age",
+      "createdAt",
+      "firstName",
+      "lastName",
       "email",
       "username",
       "avatar",
@@ -18,30 +19,42 @@ const schema = {
     properties: {
       id: {
         $ref: "#/definitions/positiveInt",
+        description: "Идентификатор",
       },
-      first_name: {
+      createdAt: {
+        type: "date",
+        description: "Дата создания",
+        faker: "date.past",
+      },
+      firstName: {
         type: "string",
+        description: "Имя",
         faker: "name.firstName",
       },
-      last_name: {
+      lastName: {
         type: "string",
+        description: "Фамилия",
         faker: "name.lastName",
       },
       age: {
         type: "integer",
+        description: "Возраст",
         maximum: 70,
         minimum: 18,
       },
       email: {
         type: "string",
+        description: "Адрес эл. почты",
         faker: "internet.email",
       },
       username: {
         type: "string",
+        description: "Логин",
         faker: "internet.userName",
       },
       avatar: {
         type: "string",
+        description: "Ссылка на аватар",
         faker: "internet.avatar",
       },
     },
@@ -56,5 +69,4 @@ const schema = {
 };
 
 console.log("Generate fake users");
-const users = generate(schema);
-module.exports = users;
+module.exports = generate(schema);
